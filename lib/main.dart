@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:questions_assembler/helpers/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Question Assembler',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: ThemeColors.primaryColor,
       ),
       home: MyHomePage(),
     );

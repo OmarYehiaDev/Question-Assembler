@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.questions_assembler">
+    package="com.spiderdevs.questions_assembler">
    <application
-        android:label="questions_assembler"
+        android:label="Questions Assembler"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

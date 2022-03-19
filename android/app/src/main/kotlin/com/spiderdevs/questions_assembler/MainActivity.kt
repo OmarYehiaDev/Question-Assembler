@@ -1,4 +1,4 @@
-package com.example.questions_assembler
+package com.spiderdevs.questions_assembler
 
 import io.flutter.embedding.android.FlutterActivity
 
