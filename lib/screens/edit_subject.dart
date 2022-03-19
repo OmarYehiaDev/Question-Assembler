@@ -5,24 +5,35 @@ import 'package:questions_assembler/models/question.dart';
 import 'package:questions_assembler/models/subject.dart';
 import 'package:questions_assembler/screens/add_question.dart';
 
-class AddSubject extends StatefulWidget {
-  const AddSubject({Key? key}) : super(key: key);
+class EditSubject extends StatefulWidget {
+  final Subject subject;
+  const EditSubject({Key? key, required this.subject}) : super(key: key);
 
   @override
-  State<AddSubject> createState() => _AddSubjectState();
+  State<EditSubject> createState() => _EditSubjectState();
 }
 
-class _AddSubjectState extends State<AddSubject> {
-  late Subject subject;
+class _EditSubjectState extends State<EditSubject> {
+  late Subject edited;
   final TextEditingController _nameController = TextEditingController();
   List<Question> easyQs = [];
   List<Question> mediumQs = [];
   List<Question> hardQs = [];
   @override
+  void initState() {
+    Subject old = widget.subject;
+    super.initState();
+    _nameController.text = old.name;
+    easyQs = old.easy;
+    mediumQs = old.medium;
+    hardQs = old.hard;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add subject"),
+        title: Text("Edit subject"),
         centerTitle: true,
       ),
       body: GestureDetector(
@@ -46,6 +57,7 @@ class _AddSubjectState extends State<AddSubject> {
               ListTile(
                 leading: Icon(Icons.question_mark),
                 title: Text("Easy Questions"),
+                subtitle: Text("Number of questions: ${easyQs.length}"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
                     final List<Question> result = await Navigator.push(
@@ -65,6 +77,7 @@ class _AddSubjectState extends State<AddSubject> {
               ListTile(
                 leading: Icon(Icons.question_mark),
                 title: Text("Medium Questions"),
+                subtitle: Text("Number of questions: ${mediumQs.length}"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
                     final List<Question> result = await Navigator.push(
@@ -84,6 +97,7 @@ class _AddSubjectState extends State<AddSubject> {
               ListTile(
                 leading: Icon(Icons.question_mark),
                 title: Text("Hard Questions"),
+                subtitle: Text("Number of questions: ${hardQs.length}"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
                     final List<Question> result = await Navigator.push(
@@ -109,13 +123,13 @@ class _AddSubjectState extends State<AddSubject> {
           child: ElevatedButton(
             child: Text("Save subject"),
             onPressed: () {
-              subject = Subject(
+              edited = Subject(
                 name: _nameController.text,
                 easy: easyQs,
                 medium: mediumQs,
                 hard: hardQs,
               );
-              Navigator.pop(context, subject);
+              Navigator.pop(context, edited);
             },
           ),
         ),

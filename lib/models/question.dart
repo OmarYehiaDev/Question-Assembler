@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+
 import 'option.dart';
 
 class Question {
@@ -8,12 +10,12 @@ class Question {
     required this.questionPhrase,
   });
 
-  final int questionId;
+  final UniqueKey questionId;
   final List<Option> options;
   final String questionPhrase;
 
   Question copyWith({
-    required int questionId,
+    required UniqueKey questionId,
     required List<Option> options,
     required String questionPhrase,
   }) =>
@@ -47,3 +49,11 @@ class Question {
         "question_phrase": questionPhrase,
       };
 }
+
+List<Question> decodeQuestionsFromJson(String str) => List<Question>.from(
+      json.decode(str).map(
+            (item) => Question.fromJson(
+              item,
+            ),
+          ),
+    );

@@ -74,3 +74,18 @@ class Subject {
         ),
       };
 }
+
+List<Subject> decodeSubjectsFromJson(String str) => List<Subject>.from(
+      json.decode(str).map(
+            (item) => Subject.fromJson(
+              item,
+            ),
+          ),
+    );
+String encodeSubjects(List<Subject> data) => json.encode(
+      data
+          .map(
+            (e) => e.toJson(),
+          )
+          .toList(),
+    );

@@ -32,3 +32,11 @@ class Option {
         "validity": validity,
       };
 }
+
+List<Option> decodeQuestionsFromJson(String str) => List<Option>.from(
+      json.decode(str).map(
+            (item) => Option.fromJson(
+              item,
+            ),
+          ),
+    );
