@@ -48,14 +48,14 @@ class _AddSubjectState extends State<AddSubject> {
                 title: Text("Easy Questions"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
-                    final List<Question> result = await Navigator.push(
+                    final Question result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => AddQuestion(),
                       ),
                     );
                     setState(() {
-                      easyQs = result;
+                      easyQs.add(result);
                     });
                   },
                   icon: Icon(Icons.add),
@@ -67,14 +67,14 @@ class _AddSubjectState extends State<AddSubject> {
                 title: Text("Medium Questions"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
-                    final List<Question> result = await Navigator.push(
+                    final Question result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => AddQuestion(),
                       ),
                     );
                     setState(() {
-                      mediumQs = result;
+                      mediumQs.add(result);
                     });
                   },
                   icon: Icon(Icons.add),
@@ -86,14 +86,14 @@ class _AddSubjectState extends State<AddSubject> {
                 title: Text("Hard Questions"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
-                    final List<Question> result = await Navigator.push(
+                    final Question result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => AddQuestion(),
                       ),
                     );
                     setState(() {
-                      hardQs = result;
+                      hardQs.add(result);
                     });
                   },
                   icon: Icon(Icons.add),

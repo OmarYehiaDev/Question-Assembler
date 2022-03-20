@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 
 import 'option.dart';
 
@@ -10,12 +9,12 @@ class Question {
     required this.questionPhrase,
   });
 
-  final UniqueKey questionId;
+  final String questionId;
   final List<Option> options;
   final String questionPhrase;
 
   Question copyWith({
-    required UniqueKey questionId,
+    required String questionId,
     required List<Option> options,
     required String questionPhrase,
   }) =>

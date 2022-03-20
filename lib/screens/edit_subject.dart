@@ -60,14 +60,14 @@ class _EditSubjectState extends State<EditSubject> {
                 subtitle: Text("Number of questions: ${easyQs.length}"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
-                    final List<Question> result = await Navigator.push(
+                    final Question result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => AddQuestion(),
                       ),
                     );
                     setState(() {
-                      easyQs = result;
+                      easyQs.add(result);
                     });
                   },
                   icon: Icon(Icons.add),
@@ -80,14 +80,14 @@ class _EditSubjectState extends State<EditSubject> {
                 subtitle: Text("Number of questions: ${mediumQs.length}"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
-                    final List<Question> result = await Navigator.push(
+                    final Question result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => AddQuestion(),
                       ),
                     );
                     setState(() {
-                      mediumQs = result;
+                      mediumQs.add(result);
                     });
                   },
                   icon: Icon(Icons.add),
@@ -100,14 +100,14 @@ class _EditSubjectState extends State<EditSubject> {
                 subtitle: Text("Number of questions: ${hardQs.length}"),
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
-                    final List<Question> result = await Navigator.push(
+                    final Question result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => AddQuestion(),
                       ),
                     );
                     setState(() {
-                      hardQs = result;
+                      hardQs.add(result);
                     });
                   },
                   icon: Icon(Icons.add),
