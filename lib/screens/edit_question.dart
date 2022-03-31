@@ -4,26 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:questions_assembler/models/option.dart';
 import 'package:questions_assembler/models/question.dart';
 
-class AddQuestion extends StatefulWidget {
-  const AddQuestion({Key? key}) : super(key: key);
+class EditQuestion extends StatefulWidget {
+  final Question question;
+  const EditQuestion({Key? key, required this.question}) : super(key: key);
 
   @override
-  State<AddQuestion> createState() => _AddQuestionState();
+  State<EditQuestion> createState() => _EditQuestionState();
 }
 
-class _AddQuestionState extends State<AddQuestion> {
-  late Question question;
+class _EditQuestionState extends State<EditQuestion> {
+  late Question edited;
+
   final TextEditingController _phraseController = TextEditingController();
   final TextEditingController _optionController = TextEditingController();
   List<Option> options = [];
   bool val = false;
 
   @override
+  void initState() {
+    Question _q = widget.question;
+
+    super.initState();
+    _phraseController.text = _q.questionPhrase;
+    options = _q.options;
+  }
+
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add question"),
+        title: Text("Edit Question"),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -176,13 +187,13 @@ class _AddQuestionState extends State<AddQuestion> {
           child: ElevatedButton(
             child: Text("Save question"),
             onPressed: () {
-              question = Question(
+              edited = Question(
                 questionId: UniqueKey().toString(),
                 questionPhrase: _phraseController.text,
                 options: options,
               );
-              if (question.questionPhrase.isNotEmpty && options.isNotEmpty) {
-                Navigator.pop(context, question);
+              if (edited.questionPhrase.isNotEmpty && options.isNotEmpty) {
+                Navigator.pop(context, edited);
               } else {
                 Navigator.pop(context);
               }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:questions_assembler/models/question.dart';
 import 'package:questions_assembler/models/subject.dart';
 import 'package:questions_assembler/screens/add_question.dart';
+import 'package:questions_assembler/screens/questions_screen.dart';
 
 class EditSubject extends StatefulWidget {
   final Subject subject;
@@ -19,6 +20,7 @@ class _EditSubjectState extends State<EditSubject> {
   List<Question> easyQs = [];
   List<Question> mediumQs = [];
   List<Question> hardQs = [];
+
   @override
   void initState() {
     Subject old = widget.subject;
@@ -35,6 +37,7 @@ class _EditSubjectState extends State<EditSubject> {
       appBar: AppBar(
         title: Text("Edit subject"),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: GestureDetector(
         onTap: () {
@@ -58,6 +61,19 @@ class _EditSubjectState extends State<EditSubject> {
                 leading: Icon(Icons.question_mark),
                 title: Text("Easy Questions"),
                 subtitle: Text("Number of questions: ${easyQs.length}"),
+                onTap: () async {
+                  final List<Question> _data = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => QuestionsScreen(
+                        list: easyQs,
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    easyQs = _data;
+                  });
+                },
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
                     final Question result = await Navigator.push(
@@ -78,6 +94,19 @@ class _EditSubjectState extends State<EditSubject> {
                 leading: Icon(Icons.question_mark),
                 title: Text("Medium Questions"),
                 subtitle: Text("Number of questions: ${mediumQs.length}"),
+                onTap: () async {
+                  final List<Question> _data = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => QuestionsScreen(
+                        list: mediumQs,
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    mediumQs = _data;
+                  });
+                },
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
                     final Question result = await Navigator.push(
@@ -98,6 +127,19 @@ class _EditSubjectState extends State<EditSubject> {
                 leading: Icon(Icons.question_mark),
                 title: Text("Hard Questions"),
                 subtitle: Text("Number of questions: ${hardQs.length}"),
+                onTap: () async {
+                  final List<Question> _data = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => QuestionsScreen(
+                        list: hardQs,
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    hardQs = _data;
+                  });
+                },
                 trailing: ElevatedButton.icon(
                   onPressed: () async {
                     final Question result = await Navigator.push(
