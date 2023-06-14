@@ -1,18 +1,17 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:questions_assembler/models/question.dart';
-import 'package:questions_assembler/screens/edit_question.dart';
+
+import 'edit_question.dart';
 
 class QuestionsScreen extends StatefulWidget {
   final List<Question> list;
   const QuestionsScreen({Key? key, required this.list}) : super(key: key);
 
   @override
-  State<QuestionsScreen> createState() => _QuestionsScreenState();
+  State<QuestionsScreen> createState() => QuestionsScreenState();
 }
 
-class _QuestionsScreenState extends State<QuestionsScreen> {
+class QuestionsScreenState extends State<QuestionsScreen> {
   List<Question> _list = [];
   @override
   void initState() {
@@ -30,20 +29,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           },
         ),
         centerTitle: true,
-        title: Text("Questions Screen"),
+        title: const Text("Questions Screen"),
       ),
       body: _list.isNotEmpty
           ? ListView.builder(
               itemBuilder: (context, index) {
-                Question _ques = _list[index];
+                Question ques = _list[index];
                 return ListTile(
-                  title: Text(_ques.questionPhrase),
+                  title: Text(ques.questionPhrase),
                   subtitle: Wrap(
                     alignment: WrapAlignment.center,
-                    children: _ques.options
+                    children: ques.options
                         .map(
                           (op) => Padding(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Chip(
                               label: Text(
                                 op.answer,
@@ -51,8 +50,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               avatar: Icon(
                                 op.validity ? Icons.check : Icons.close,
                               ),
-                              backgroundColor:
-                                  op.validity ? Colors.green : Colors.red,
+                              backgroundColor: op.validity ? Colors.green : Colors.red,
                             ),
                           ),
                         )
@@ -64,25 +62,25 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       barrierDismissible: false,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text("Remove question"),
-                          content: Text(
+                          title: const Text("Remove question"),
+                          content: const Text(
                             "Are you sure about removing this question?",
                           ),
                           actions: [
                             TextButton(
                               onPressed: () async {
-                                _list.remove(_ques);
+                                _list.remove(ques);
                                 if (!mounted) return;
                                 setState(() {});
                                 Navigator.pop(context);
                               },
-                              child: Text("Yes"),
+                              child: const Text("Yes"),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text("No"),
+                              child: const Text("No"),
                             ),
                           ],
                         );
@@ -94,7 +92,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (_) => EditQuestion(
-                          question: _ques,
+                          question: ques,
                         ),
                       ),
                     );
@@ -106,7 +104,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               },
               itemCount: _list.length,
             )
-          : Center(
+          : const Center(
               child: Text("There's no questions yet :'("),
             ),
     );

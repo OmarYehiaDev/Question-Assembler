@@ -9,12 +9,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:questions_assembler/models/question.dart';
 // import 'package:questions_assembler/helpers/theme.dart';
 import 'package:questions_assembler/models/subject.dart';
-import 'package:questions_assembler/screens/add_subject.dart';
-import 'package:questions_assembler/screens/edit_subject.dart';
+import 'package:questions_assembler/screens/make_test.dart';
 import 'package:questions_assembler/services/middleware.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:questions_assembler/utils/constants.dart';
+
+import 'screens/add_subject.dart';
+import 'screens/edit_subject.dart';
+import 'utils/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,8 +32,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Question Assembler',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
+      theme: ThemeData.from(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.secondary,
+          brightness: Brightness.dark,
+        ),
       ),
       home: MyHomePage(),
       debugShowCheckedModeBanner: false,
@@ -44,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TestBankStorage _storage = TestBankStorage();
-  List<Subject> _subjects = [];
+  List<Subject> subjects = [];
 
   @override
   void initState() {
@@ -52,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _storage.readBank().then((value) {
       if (!mounted) return;
       setState(() {
-        _subjects = value;
+        subjects = value;
       });
     });
   }
@@ -63,20 +71,38 @@ class _MyHomePageState extends State<MyHomePage> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Question Assembler"),
+        backgroundColor: AppColors.secondary,
+        foregroundColor: AppColors.primary,
+        title: Text(
+          "Quizzy",
+          style: AppTextStyles.appBarTitle,
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GenerateTest(),
+                ),
+              );
+            },
+            icon: Icon(Icons.text_snippet),
+          ),
+        ],
       ),
       body: Center(
-        child: _subjects.isNotEmpty
+        child: subjects.isNotEmpty
             ? ListView.builder(
-                itemCount: _subjects.length,
+                itemCount: subjects.length,
                 itemBuilder: (context, index) {
-                  Subject _subject = _subjects[index];
-                  List<Question> _qs =
-                      (_subject.easy + _subject.medium + _subject.hard);
+                  Subject subject = subjects[index];
+                  List<Question> qs = (subject.easy + subject.medium + subject.hard);
                   return ListTile(
-                    title: Text(_subject.name),
+                    title: Text(subject.name),
                     trailing: Text(
-                      "Number of questions: ${_qs.length}",
+                      "Number of questions: ${qs.length}",
                     ),
                     onLongPress: () async {
                       //* Function to make PDF file
@@ -95,16 +121,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           pageFormat: PdfPageFormat.a4,
                           build: (pw.Context context) {
-                            List<Question> _specificRand = List.generate(
+                            List<Question> specificRand = List.generate(
                               5,
-                              (index) => randomChoice<Question>(_qs),
+                              (index) => randomChoice<Question>(qs),
                             );
                             return [
                               pw.Align(
                                 child: pw.Padding(
                                   padding: pw.EdgeInsets.all(12.0),
                                   child: pw.Text(
-                                    _subject.name,
+                                    subject.name,
                                     style: pw.TextStyle(
                                       fontSize: 24.0,
                                     ),
@@ -114,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               pw.ListView.separated(
                                 itemBuilder: (context, index) {
-                                  Question _q = _specificRand[index];
+                                  Question q = specificRand[index];
                                   return pw.Container(
                                     width: width,
                                     height: height * 0.07,
@@ -123,10 +149,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                         pw.Align(
                                           child: pw.Padding(
                                             child: pw.Text(
-                                              " - ${index + 1} " +
-                                                  _q.questionPhrase,
-                                              textDirection:
-                                                  pw.TextDirection.rtl,
+                                              " - ${index + 1} ${q.questionPhrase}",
+                                              textDirection: pw.TextDirection.rtl,
                                               style: pw.TextStyle(
                                                 fontSize: 16.0,
                                               ),
@@ -137,17 +161,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ),
                                         pw.Row(
                                           mainAxisSize: pw.MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              pw.MainAxisAlignment.spaceEvenly,
-                                          children: _q.options
+                                          mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                                          children: q.options
                                               .map(
                                                 (e) => pw.Row(
-                                                  mainAxisAlignment: pw
-                                                      .MainAxisAlignment.start,
+                                                  mainAxisAlignment: pw.MainAxisAlignment.start,
                                                   children: [
                                                     pw.Padding(
-                                                      padding: pw.EdgeInsets
-                                                          .symmetric(
+                                                      padding: pw.EdgeInsets.symmetric(
                                                         horizontal: 8.0,
                                                       ),
                                                       child: pw.Text(
@@ -160,14 +181,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     pw.Container(
                                                       width: 16,
                                                       height: 16,
-                                                      decoration:
-                                                          pw.BoxDecoration(
+                                                      decoration: pw.BoxDecoration(
                                                         border: pw.Border.all(
-                                                          color:
-                                                              PdfColors.black,
+                                                          color: PdfColors.black,
                                                         ),
-                                                        shape:
-                                                            pw.BoxShape.circle,
+                                                        shape: pw.BoxShape.circle,
                                                       ),
                                                     ),
                                                   ],
@@ -181,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 },
                                 separatorBuilder: (context, index) =>
                                     pw.Divider(height: height * 0.015),
-                                itemCount: _specificRand.length,
+                                itemCount: specificRand.length,
                               ),
                             ];
                           },
@@ -192,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       await file.writeAsBytes(
                         await pdf.save(),
                       );
+                      if (!mounted) return;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -208,38 +227,49 @@ class _MyHomePageState extends State<MyHomePage> {
                       final Subject result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => EditSubject(subject: _subject),
+                          builder: (_) => EditSubject(subject: subject),
                         ),
                       );
                       setState(() {
-                        _subjects[index] = result;
+                        subjects[index] = result;
                       });
                       await _storage.writeBank(
-                        encodeSubjects(_subjects),
+                        encodeSubjects(subjects),
                       );
                     },
                   );
                 },
               )
-            : Text("There's no subjects yet :'("),
+            : Text(
+                "There's no subjects yet :'(",
+                style: AppTextStyles.body.copyWith(
+                  fontFamily: Constants.secondaryFontFamily,
+                ),
+              ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text(
+          "Add Subject",
+          style: AppTextStyles.body,
+        ),
+        backgroundColor: AppColors.secondary,
+        foregroundColor: AppColors.primary,
         onPressed: () async {
-          final Subject result = await Navigator.push(
+          final Subject? result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => AddSubject(),
             ),
           );
           setState(() {
-            _subjects.add(result);
+            if (result != null) subjects.add(result);
           });
           await _storage.writeBank(
-            encodeSubjects(_subjects),
+            encodeSubjects(subjects),
           );
         },
         tooltip: 'Add subject',
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
       ),
     );
   }

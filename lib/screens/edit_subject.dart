@@ -62,7 +62,7 @@ class _EditSubjectState extends State<EditSubject> {
                 title: Text("Easy Questions"),
                 subtitle: Text("Number of questions: ${easyQs.length}"),
                 onTap: () async {
-                  final List<Question> _data = await Navigator.push(
+                  final List<Question> data = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QuestionsScreen(
@@ -71,7 +71,7 @@ class _EditSubjectState extends State<EditSubject> {
                     ),
                   );
                   setState(() {
-                    easyQs = _data;
+                    easyQs = data;
                   });
                 },
                 trailing: ElevatedButton.icon(
@@ -95,7 +95,7 @@ class _EditSubjectState extends State<EditSubject> {
                 title: Text("Medium Questions"),
                 subtitle: Text("Number of questions: ${mediumQs.length}"),
                 onTap: () async {
-                  final List<Question> _data = await Navigator.push(
+                  final List<Question> data = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QuestionsScreen(
@@ -104,7 +104,7 @@ class _EditSubjectState extends State<EditSubject> {
                     ),
                   );
                   setState(() {
-                    mediumQs = _data;
+                    mediumQs = data;
                   });
                 },
                 trailing: ElevatedButton.icon(
@@ -128,7 +128,7 @@ class _EditSubjectState extends State<EditSubject> {
                 title: Text("Hard Questions"),
                 subtitle: Text("Number of questions: ${hardQs.length}"),
                 onTap: () async {
-                  final List<Question> _data = await Navigator.push(
+                  final List<Question> data = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QuestionsScreen(
@@ -137,7 +137,7 @@ class _EditSubjectState extends State<EditSubject> {
                     ),
                   );
                   setState(() {
-                    hardQs = _data;
+                    hardQs = data;
                   });
                 },
                 trailing: ElevatedButton.icon(
